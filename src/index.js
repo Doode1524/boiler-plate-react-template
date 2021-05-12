@@ -1,13 +1,30 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux'  
+// Provider Makes the Redux store available to all Nested components(notice the wrapped components below)
+import { createStore, applyMiddleware, compose } from 'redux' 
+/// createStore to set up your store, applyMiddleware enhancer in order to use Thunk, and compose to use enhancer for 3rd party options(Redux Dev Tools)
+import reduxThunk from 'redux-thunk'
+
+/// Import reducers Here
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose  // To allow access of Redux dev tools to your store
+
+const store = createStore(    // initial Store Setup
+  reducerName,                // Name of YOUR reducer
+  composeEnhancers(applyMiddleware(reduxThunk))
+)
+
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+ReactDOM.render(           // Wrap all compoents with Provider component and store props to access your store in all nested components
+  <Provider store={store}>    
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  </Provider>,
   document.getElementById('root')
 );
 
